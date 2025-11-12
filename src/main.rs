@@ -16,9 +16,10 @@ fn main() {
         // println!("{}", args[i]);
         match args[i].as_str() {
             "default.nix" => default_nix(),
+            "shell.nix" => shell_nix(),
+            "nix_module" | "mod.nix" | "module.nix" => nix_module(),
             "c" => c(),
             "cc" | "cplusplus" | "c++" | "cpp" => cpp(),
-            "shell.nix" => shell_nix(),
             "python13" => python13(),
             _ => eprintln!("Unknown boilerplate: {}", args[i]),
         };

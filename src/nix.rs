@@ -16,6 +16,18 @@ pub fn default_nix() {
     }
 }
 
+pub fn nix_module() {
+    let content = "{ lib, self, ... }:
+{
+}
+    ";
+    let mut fil = File::create("./module.nix").expect("ERROR: Could not open file");
+    match write!(fil, "{content}") {
+        Ok(()) => (),
+        Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
+    }
+}
+
 pub fn shell_nix() {
     let content = "{
   pkgs ? import <nixpkgs> { },
