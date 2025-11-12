@@ -28,7 +28,7 @@ pkgs.mkShell {
   '';
 }
     ";
-    let mut fil = File::create("./default.nix").expect("ERROR: Could not open file");
+    let mut fil = File::create("./shell.nix").expect("ERROR: Could not open file");
     match write!(fil, "{content}") {
         Ok(()) => (),
         Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
