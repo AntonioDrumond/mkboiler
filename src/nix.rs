@@ -2,9 +2,12 @@ use std::fs::File;
 use std::io::{self, Error, Write};
 
 pub fn default_nix() {
-    let content = "default 
-dot
-nix
+    let content = "{ lib, self, ... }:
+{
+  imports = [
+    # Add imports here
+  ];
+}
     ";
     let mut fil = File::create("./default.nix").expect("ERROR: Could not open file");
     match write!(fil, "{content}") {
@@ -14,8 +17,7 @@ nix
 }
 
 pub fn shell_nix() {
-    let content = "default 
-{
+    let content = "{
   pkgs ? import <nixpkgs> { },
 }:
 pkgs.mkShell {

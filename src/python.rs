@@ -2,8 +2,7 @@ use std::fs::File;
 use std::io::{Write};
 
 pub fn python13() {
-    let content = "default 
-{
+    let content = "{
   pkgs ? import <nixpkgs> { },
 }:
 pkgs.mkShell {
