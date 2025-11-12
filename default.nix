@@ -1,4 +1,6 @@
-default 
-dot
-nix
-    
+{ lib, self, ... }:
+{
+  imports = [
+    # Add imports here
+  ];
+}

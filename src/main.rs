@@ -1,10 +1,12 @@
 mod nix;
 mod c;
+mod python;
 
 use std::env;
 use crate::{
     nix::*,
     c::*,
+    python::*,
 };
 
 fn main() {
@@ -16,6 +18,8 @@ fn main() {
             "default.nix" => default_nix(),
             "c" => c(),
             "cc" | "cplusplus" | "c++" | "cpp" => cpp(),
+            "shell.nix" => shell_nix(),
+            "python13" => python13(),
             _ => eprintln!("Unknown boilerplate: {}", args[i]),
         };
         i += 1;
