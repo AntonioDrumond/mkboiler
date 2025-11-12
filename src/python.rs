@@ -14,6 +14,7 @@ pkgs.mkShell {
 
   shellHook = ''
     export PYTHONPATH=$PWD:$PYTHONPATH
+    alias py=\"python\";
   '';
 }
     ";

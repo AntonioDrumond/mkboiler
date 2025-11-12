@@ -1,5 +1,5 @@
 use std::fs::File;
-use std::io::{self, Error, Write};
+use std::io::{Write};
 
 pub fn default_nix() {
     let content = "{ lib, self, ... }:
