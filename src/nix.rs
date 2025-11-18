@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn default_nix() {
+pub fn default_nix(name: Option<&str>) {
     let content = "{ lib, self, ... }:
 {
   imports = [
@@ -9,26 +9,34 @@ pub fn default_nix() {
   ];
 }
     ";
-    let mut fil = File::create("./default.nix").expect("ERROR: Could not open file");
+    let fname = match name {
+        Some(s) => s,
+        None => "./default.nix",
+    };
+    let mut fil = File::create(fname).expect("ERROR: Could not open file");
     match write!(fil, "{content}") {
         Ok(()) => (),
         Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
     }
 }
 
-pub fn nix_module() {
+pub fn nix_module(name: Option<&str>) {
     let content = "{ lib, self, ... }:
 {
 }
     ";
-    let mut fil = File::create("./module.nix").expect("ERROR: Could not open file");
+    let fname = match name {
+        Some(s) => s,
+        None => "./module.nix",
+    };
+    let mut fil = File::create(fname).expect("ERROR: Could not open file");
     match write!(fil, "{content}") {
         Ok(()) => (),
         Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
     }
 }
 
-pub fn shell_nix() {
+pub fn shell_nix(name: Option<&str>) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -42,7 +50,11 @@ pkgs.mkShell {
   '';
 }
     ";
-    let mut fil = File::create("./shell.nix").expect("ERROR: Could not open file");
+    let fname = match name {
+        Some(s) => s,
+        None => "./shell.nix",
+    };
+    let mut fil = File::create(fname).expect("ERROR: Could not open file");
     match write!(fil, "{content}") {
         Ok(()) => (),
         Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),

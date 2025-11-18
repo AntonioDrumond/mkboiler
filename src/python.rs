@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn python13() {
+pub fn python13(name: Option<&str>) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -18,7 +18,11 @@ pkgs.mkShell {
   '';
 }
     ";
-    let mut fil = File::create("./shell.nix").expect("ERROR: Could not open file");
+    let fname = match name {
+        Some(s) => s,
+        None => "./shell.nix",
+    };
+    let mut fil = File::create(fname).expect("ERROR: Could not open file");
     match write!(fil, "{content}") {
         Ok(()) => (),
         Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),

@@ -11,18 +11,22 @@ use crate::{
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let mut i = 1;
-    while i < args.len() {
-        // println!("{}", args[i]);
-        match args[i].as_str() {
-            "default.nix" => default_nix(),
-            "shell.nix" => shell_nix(),
-            "nix_module" | "mod.nix" | "module.nix" => nix_module(),
-            "c" => c(),
-            "cc" | "cplusplus" | "c++" | "cpp" => cpp(),
-            "python13" => python13(),
-            _ => eprintln!("Unknown boilerplate: {}", args[i]),
+    if args.len() > 1 {
+        let fname = if args.len() > 2 {
+            Some(args[2].as_str())
+        } else { None };
+        match args[1].as_str() {
+            "default.nix" => default_nix(fname),
+            "shell.nix" => shell_nix(fname),
+            "nix_module" | "mod.nix" | "module.nix" => nix_module(fname),
+            "c" => c(fname),
+            "cc" | "cplusplus" | "c++" | "cpp" => cpp(fname),
+            "python13" => python13(fname),
+            _ => eprintln!("Unknown boilerplate: {}", args[1]),
         };
-        i += 1;
+    }
+    else {
+        println!("Usage:");
+        println!("mkboiler [boiler type] [file name (optional)]")
     }
 }
