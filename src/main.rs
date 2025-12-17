@@ -1,12 +1,14 @@
 mod nix;
 mod c;
 mod python;
+mod rust;
 
 use std::env;
 use crate::{
     nix::*,
     c::*,
     python::*,
+    rust::*,
 };
 
 fn main() {
@@ -22,6 +24,8 @@ fn main() {
             "c" => c(fname),
             "cc" | "cplusplus" | "c++" | "cpp" => cpp(fname),
             "python13" => python13(fname),
+            "rustshell" | "rustShell" | "rust_shell" => rustShell(fname),
+            "icedshell" | "icedShell" | "iced_shell" => icedShell(fname),
             _ => eprintln!("Unknown boilerplate: {}", args[1]),
         };
     }
