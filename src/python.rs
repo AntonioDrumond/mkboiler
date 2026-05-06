@@ -1,7 +1,7 @@
 use std::fs::File;
-use std::io::{Write};
+use std::io::Write;
 
-pub fn python13(name: Option<&str>) {
+pub fn python3(name: Option<&str>) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
