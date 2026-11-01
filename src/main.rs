@@ -78,10 +78,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             "shell" | "shell.nix" => Ok(nix::shell(&config)?),
             "nix_module" | "mod.nix" | "module.nix" => Ok(nix::module(&config)?),
             "c" => Ok(c::c(&config)?),
-            "cc" | "cplusplus" | "c++" | "cpp" => Ok(c::cpp(&config)?),
+            "cc" | "c++" | "cpp" => Ok(c::cpp(&config)?),
             "python" | "python3" => Ok(python::python3(&config)?),
-            "rust" | "rustshell" | "rustShell" | "rust_shell" => Ok(rust::rust(&config)?),
-            "icedshell" | "icedShell" | "iced_shell" => Ok(rust::iced(&config)?),
+            "rust"  => Ok(rust::rust(&config)?),
+            "iced" => Ok(rust::iced(&config)?),
             _ => Err(MkboilerError::new(format!(
                 "Unknown boilerplate: {}",
                 config.target
