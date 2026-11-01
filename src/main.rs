@@ -1,4 +1,8 @@
-use std::{env, error::Error, fmt::{self, Display}};
+use std::{
+    env,
+    error::Error,
+    fmt::{self, Display},
+};
 
 use mkboiler::{Config, IndentStyle, c, nix, python, rust};
 
@@ -11,7 +15,7 @@ impl Display for MkboilerError {
     }
 }
 
-impl Error for MkboilerError { }
+impl Error for MkboilerError {}
 
 #[derive(Default)]
 struct Options<'a> {
@@ -19,26 +23,26 @@ struct Options<'a> {
     pub help: Option<&'a str>,
     pub output: Option<&'a str>,
     pub use_tabs: bool,
-    pub spaces: Option<u32>
+    pub spaces: Option<u32>,
 }
 
 enum ArgState {
     Arg,
     Value(ValueState),
-    Either(ValueState)
+    Either(ValueState),
 }
 
 enum ValueState {
     Help,
     Output,
-    Spaces
+    Spaces,
 }
 
-impl <'a> From<Options<'a>> for Config<'a> {
+impl<'a> From<Options<'a>> for Config<'a> {
     fn from(opts: Options<'a>) -> Self {
-        let target =  opts.mkboiler_target.unwrap_or_else(
-            || unreachable!("invariant broken: the target must be known at this point")
-        );
+        let target = opts.mkboiler_target.unwrap_or_else(|| {
+            unreachable!("invariant broken: the target must be known at this point")
+        });
 
         let indent = if opts.use_tabs {
             IndentStyle::Tabs
@@ -52,7 +56,7 @@ impl <'a> From<Options<'a>> for Config<'a> {
             target,
             output: opts.output,
             indent,
-        } 
+        }
     }
 }
 
@@ -90,7 +94,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             "python" | "python3" => Ok(python::python3(&config)),
             "rust" | "rustshell" | "rustShell" | "rust_shell" => Ok(rust::rust(&config)),
             "icedshell" | "icedShell" | "iced_shell" => Ok(rust::iced(&config)),
-            _ => Err(MkboilerError(format!("Unknown boilerplate: {}", config.target))),
+            _ => Err(MkboilerError(format!(
+                "Unknown boilerplate: {}",
+                config.target
+            ))),
         }?;
     } else {
         println!("Usage:");
@@ -106,7 +113,7 @@ fn apply_either_default(value_state: ValueState, opts: &mut Options) {
             if opts.spaces.is_none() {
                 opts.spaces = Some(4);
             }
-        },
+        }
         _ => {}
     }
 }
@@ -121,40 +128,50 @@ fn process_arg<'a>(arg: &'a str, opts: &mut Options<'a>) -> Result<ArgState, Mkb
             "-o" | "--output" => Ok(ArgState::Value(ValueState::Output)),
             "-t" | "--tabs" => {
                 if opts.spaces.is_some() {
-                    Err(MkboilerError("the argument '--tabs' cannot be used with '--spaces [<num>]'".to_owned()))
+                    Err(MkboilerError(
+                        "the argument '--tabs' cannot be used with '--spaces [<num>]'".to_owned(),
+                    ))
                 } else {
                     opts.use_tabs = true;
                     Ok(ArgState::Arg)
                 }
-            },
+            }
             "-s" | "--spaces" => {
                 if opts.use_tabs {
-                    Err(MkboilerError("the argument '--spaces [<num>]' cannot be used with '--tabs'".to_owned()))
+                    Err(MkboilerError(
+                        "the argument '--spaces [<num>]' cannot be used with '--tabs'".to_owned(),
+                    ))
                 } else {
                     Ok(ArgState::Either(ValueState::Spaces))
                 }
-            },
-            _ => Err(MkboilerError(format!("Unknown argument: {}", arg)))
+            }
+            _ => Err(MkboilerError(format!("Unknown argument: {}", arg))),
         }
     }
 }
 
-fn process_value<'a>(value: &'a str, value_state: ValueState, opts: &mut Options<'a>) -> Result<ArgState, MkboilerError> {
+fn process_value<'a>(
+    value: &'a str,
+    value_state: ValueState,
+    opts: &mut Options<'a>,
+) -> Result<ArgState, MkboilerError> {
     match value_state {
         ValueState::Help => {
             opts.help = Some(value);
             Ok(ArgState::Arg)
-        },
+        }
         ValueState::Output => {
-            opts.output = Some(value); 
+            opts.output = Some(value);
             Ok(ArgState::Arg)
-        },
+        }
         ValueState::Spaces => {
             if let Ok(space_amount) = value.parse::<u32>() {
-                opts.spaces = Some(space_amount); 
+                opts.spaces = Some(space_amount);
                 Ok(ArgState::Arg)
             } else {
-                Err(MkboilerError("Invalid value (spaces): expected positive integer".to_owned()))
+                Err(MkboilerError(
+                    "Invalid value (spaces): expected positive integer".to_owned(),
+                ))
             }
         }
     }

@@ -5,11 +5,11 @@ pub mod rust;
 
 pub enum IndentStyle {
     Tabs,
-    Spaces(u32)
+    Spaces(u32),
 }
 
 pub struct Config<'a> {
     pub target: &'a str,
     pub output: Option<&'a str>,
-    pub indent: IndentStyle
+    pub indent: IndentStyle,
 }
