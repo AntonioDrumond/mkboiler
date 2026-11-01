@@ -16,8 +16,7 @@ pkgs.mkShell {
     export PYTHONPATH=$PWD:$PYTHONPATH
     alias py=\"python\";
   '';
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./shell.nix",

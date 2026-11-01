@@ -7,8 +7,7 @@ pub fn default(name: Option<&str>) {
   imports = [
     # Add imports here
   ];
-}
-    ";
+}";
 
     let fname = match name {
         Some(s) => s,
@@ -24,8 +23,7 @@ pub fn default(name: Option<&str>) {
 pub fn module(name: Option<&str>) {
     let content = "{ lib, self, ... }:
 {
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./module.nix",
@@ -49,8 +47,7 @@ pkgs.mkShell {
   shellHook = ''
     # Add start script here
   '';
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./shell.nix",

@@ -16,8 +16,7 @@ pkgs.mkShell {
 
   shellHook = ''
   '';
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./shell.nix",
@@ -58,8 +57,7 @@ pkgs.mkShell {
 
   shellHook = ''
   '';
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./shell.nix",

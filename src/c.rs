@@ -9,8 +9,7 @@ pub fn c(name: Option<&str>) {
 
 int main(int argc, char *argv[]){
     return 0;
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./main.c",
@@ -28,8 +27,7 @@ pub fn cpp(name: Option<&str>) {
 
 int main(int argc, char *argv[]){
     return 0;
-}
-    ";
+}";
     let fname = match name {
         Some(s) => s,
         None => "./main.cc",
