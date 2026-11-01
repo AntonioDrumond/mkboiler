@@ -2,6 +2,7 @@ use core::fmt;
 use std::{error::Error, fmt::Display};
 
 pub mod c;
+pub mod cpp;
 pub mod nix;
 pub mod python;
 pub mod rust;

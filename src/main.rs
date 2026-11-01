@@ -3,7 +3,7 @@ use std::{
     error::Error,
 };
 
-use mkboiler::{Config, IndentStyle, MkboilerError, c, nix, python, rust};
+use mkboiler::*;
 
 #[derive(Default)]
 struct Options<'a> {
@@ -78,7 +78,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             "shell" | "shell.nix" => Ok(nix::shell(&config)?),
             "nix_module" | "mod.nix" | "module.nix" => Ok(nix::module(&config)?),
             "c" => Ok(c::c(&config)?),
-            "cc" | "c++" | "cpp" => Ok(c::cpp(&config)?),
+            "cc" | "c++" | "cpp" => Ok(cpp::cpp(&config)?),
             "python" | "python3" => Ok(python::python3(&config)?),
             "rust"  => Ok(rust::rust(&config)?),
             "iced" => Ok(rust::iced(&config)?),
