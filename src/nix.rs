@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn default_nix(name: Option<&str>) {
+pub fn default(name: Option<&str>) {
     let content = "{ lib, self, ... }:
 {
   imports = [
@@ -9,6 +9,7 @@ pub fn default_nix(name: Option<&str>) {
   ];
 }
     ";
+
     let fname = match name {
         Some(s) => s,
         None => "./default.nix",
@@ -20,7 +21,7 @@ pub fn default_nix(name: Option<&str>) {
     }
 }
 
-pub fn nix_module(name: Option<&str>) {
+pub fn module(name: Option<&str>) {
     let content = "{ lib, self, ... }:
 {
 }
@@ -36,7 +37,7 @@ pub fn nix_module(name: Option<&str>) {
     }
 }
 
-pub fn shell_nix(name: Option<&str>) {
+pub fn shell(name: Option<&str>) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:

@@ -3,7 +3,6 @@ mod nix;
 mod python;
 mod rust;
 
-use crate::{c::*, nix::*, python::*, rust::*};
 use std::env;
 
 fn main() {
@@ -14,15 +13,16 @@ fn main() {
         } else {
             None
         };
+
         match args[1].as_str() {
-            "default.nix" => default_nix(fname),
-            "shell.nix" => shell_nix(fname),
-            "nix_module" | "mod.nix" | "module.nix" => nix_module(fname),
-            "c" => c(fname),
-            "cc" | "cplusplus" | "c++" | "cpp" => cpp(fname),
-            "python3" => python3(fname),
-            "rustshell" | "rustShell" | "rust_shell" => rustShell(fname),
-            "icedshell" | "icedShell" | "iced_shell" => icedShell(fname),
+            "default" | "default.nix" => nix::default(fname),
+            "shell" | "shell.nix" => nix::shell(fname),
+            "nix_module" | "mod.nix" | "module.nix" => nix::module(fname),
+            "c" => c::c(fname),
+            "cc" | "cplusplus" | "c++" | "cpp" => c::cpp(fname),
+            "python3" => python::python3(fname),
+            "rust" | "rustshell" | "rustShell" | "rust_shell" => rust::rust(fname),
+            "icedshell" | "icedShell" | "iced_shell" => rust::iced(fname),
             _ => eprintln!("Unknown boilerplate: {}", args[1]),
         };
     } else {

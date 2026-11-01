@@ -1,7 +1,7 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn rustShell(name: Option<&str>) {
+pub fn rust(name: Option<&str>) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -29,7 +29,7 @@ pkgs.mkShell {
     }
 }
 
-pub fn icedShell(name: Option<&str>) {
+pub fn iced(name: Option<&str>) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
