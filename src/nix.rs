@@ -1,7 +1,9 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn default(name: Option<&str>) {
+use crate::Config;
+
+pub fn default(config: &Config) {
     let content = "{ lib, self, ... }:
 {
   imports = [
@@ -9,7 +11,7 @@ pub fn default(name: Option<&str>) {
   ];
 }";
 
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./default.nix",
     };
@@ -20,11 +22,11 @@ pub fn default(name: Option<&str>) {
     }
 }
 
-pub fn module(name: Option<&str>) {
+pub fn module(config: &Config) {
     let content = "{ lib, self, ... }:
 {
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./module.nix",
     };
@@ -35,7 +37,7 @@ pub fn module(name: Option<&str>) {
     }
 }
 
-pub fn shell(name: Option<&str>) {
+pub fn shell(config: &Config) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -48,7 +50,7 @@ pkgs.mkShell {
     # Add start script here
   '';
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./shell.nix",
     };

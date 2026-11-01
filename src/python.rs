@@ -1,7 +1,9 @@
 use std::fs::File;
 use std::io::Write;
 
-pub fn python3(name: Option<&str>) {
+use crate::Config;
+
+pub fn python3(config: &Config) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -17,7 +19,7 @@ pkgs.mkShell {
     alias py=\"python\";
   '';
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./shell.nix",
     };

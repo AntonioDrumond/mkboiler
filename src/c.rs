@@ -1,7 +1,9 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn c(name: Option<&str>) {
+use crate::Config;
+
+pub fn c(config: &Config) {
     let content = "#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -10,7 +12,7 @@ pub fn c(name: Option<&str>) {
 int main(int argc, char *argv[]){
     return 0;
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./main.c",
     };
@@ -21,14 +23,14 @@ int main(int argc, char *argv[]){
     }
 }
 
-pub fn cpp(name: Option<&str>) {
+pub fn cpp(config: &Config) {
     let content = "#include <iostream>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
     return 0;
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./main.cc",
     };

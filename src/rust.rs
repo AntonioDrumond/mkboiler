@@ -1,7 +1,9 @@
 use std::fs::File;
 use std::io::{Write};
 
-pub fn rust(name: Option<&str>) {
+use crate::Config;
+
+pub fn rust(config: &Config) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -17,7 +19,7 @@ pkgs.mkShell {
   shellHook = ''
   '';
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./shell.nix",
     };
@@ -28,7 +30,7 @@ pkgs.mkShell {
     }
 }
 
-pub fn iced(name: Option<&str>) {
+pub fn iced(config: &Config) {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -58,7 +60,7 @@ pkgs.mkShell {
   shellHook = ''
   '';
 }";
-    let fname = match name {
+    let fname = match config.output {
         Some(s) => s,
         None => "./shell.nix",
     };
