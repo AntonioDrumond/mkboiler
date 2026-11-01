@@ -1,9 +1,8 @@
-use std::fs::File;
-use std::io::Write;
+use std::fs;
 
-use crate::Config;
+use crate::{Config, MkboilerError};
 
-pub fn c(config: &Config) {
+pub fn c(config: &Config) -> Result<(), MkboilerError> {
     let content = "#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -12,31 +11,21 @@ pub fn c(config: &Config) {
 int main(int argc, char *argv[]){
     return 0;
 }";
-    let fname = match config.output {
-        Some(s) => s,
-        None => "./main.c",
-    };
-    let mut fil = File::create(fname).expect("ERROR: Could not open file");
-    match write!(fil, "{content}") {
-        Ok(()) => (),
-        Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
-    }
+
+    let output = config.output.unwrap_or("./main.c"); 
+    fs::write(output, content)
+        .map_err(|e| MkboilerError::new(format!("could not write to file '{output}': {e}")))
 }
 
-pub fn cpp(config: &Config) {
+pub fn cpp(config: &Config) -> Result<(), MkboilerError> {
     let content = "#include <iostream>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]){
     return 0;
 }";
-    let fname = match config.output {
-        Some(s) => s,
-        None => "./main.cc",
-    };
-    let mut fil = File::create(fname).expect("ERROR: Could not open file");
-    match write!(fil, "{content}") {
-        Ok(()) => (),
-        Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
-    }
+
+    let output = config.output.unwrap_or("./main.cc"); 
+    fs::write(output, content)
+        .map_err(|e| MkboilerError::new(format!("could not write to file '{output}': {e}")))
 }

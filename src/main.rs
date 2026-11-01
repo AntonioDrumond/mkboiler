@@ -1,21 +1,9 @@
 use std::{
     env,
     error::Error,
-    fmt::{self, Display},
 };
 
-use mkboiler::{Config, IndentStyle, c, nix, python, rust};
-
-#[derive(Debug)]
-struct MkboilerError(String);
-
-impl Display for MkboilerError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.0)
-    }
-}
-
-impl Error for MkboilerError {}
+use mkboiler::{Config, IndentStyle, MkboilerError, c, nix, python, rust};
 
 #[derive(Default)]
 struct Options<'a> {
@@ -94,7 +82,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             "python" | "python3" => Ok(python::python3(&config)),
             "rust" | "rustshell" | "rustShell" | "rust_shell" => Ok(rust::rust(&config)),
             "icedshell" | "icedShell" | "iced_shell" => Ok(rust::iced(&config)),
-            _ => Err(MkboilerError(format!(
+            _ => Err(MkboilerError::new(format!(
                 "Unknown boilerplate: {}",
                 config.target
             ))),
@@ -128,7 +116,7 @@ fn process_arg<'a>(arg: &'a str, opts: &mut Options<'a>) -> Result<ArgState, Mkb
             "-o" | "--output" => Ok(ArgState::Value(ValueState::Output)),
             "-t" | "--tabs" => {
                 if opts.spaces.is_some() {
-                    Err(MkboilerError(
+                    Err(MkboilerError::new(
                         "the argument '--tabs' cannot be used with '--spaces [<num>]'".to_owned(),
                     ))
                 } else {
@@ -138,14 +126,14 @@ fn process_arg<'a>(arg: &'a str, opts: &mut Options<'a>) -> Result<ArgState, Mkb
             }
             "-s" | "--spaces" => {
                 if opts.use_tabs {
-                    Err(MkboilerError(
+                    Err(MkboilerError::new(
                         "the argument '--spaces [<num>]' cannot be used with '--tabs'".to_owned(),
                     ))
                 } else {
                     Ok(ArgState::Either(ValueState::Spaces))
                 }
             }
-            _ => Err(MkboilerError(format!("Unknown argument: {}", arg))),
+            _ => Err(MkboilerError::new(format!("Unknown argument: {}", arg))),
         }
     }
 }
@@ -169,7 +157,7 @@ fn process_value<'a>(
                 opts.spaces = Some(space_amount);
                 Ok(ArgState::Arg)
             } else {
-                Err(MkboilerError(
+                Err(MkboilerError::new(
                     "Invalid value (spaces): expected positive integer".to_owned(),
                 ))
             }

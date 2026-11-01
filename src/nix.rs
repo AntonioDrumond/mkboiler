@@ -1,9 +1,8 @@
-use std::fs::File;
-use std::io::Write;
+use std::fs;
 
-use crate::Config;
+use crate::{Config, MkboilerError};
 
-pub fn default(config: &Config) {
+pub fn default(config: &Config) -> Result<(), MkboilerError> {
     let content = "{ lib, self, ... }:
 {
   imports = [
@@ -11,33 +10,22 @@ pub fn default(config: &Config) {
   ];
 }";
 
-    let fname = match config.output {
-        Some(s) => s,
-        None => "./default.nix",
-    };
-    let mut fil = File::create(fname).expect("ERROR: Could not open file");
-    match write!(fil, "{content}") {
-        Ok(()) => (),
-        Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
-    }
+    let output = config.output.unwrap_or("./default.nix"); 
+    fs::write(output, content)
+        .map_err(|e| MkboilerError::new(format!("could not write to file '{output}': {e}")))
 }
 
-pub fn module(config: &Config) {
+pub fn module(config: &Config) -> Result<(), MkboilerError> {
     let content = "{ lib, self, ... }:
 {
 }";
-    let fname = match config.output {
-        Some(s) => s,
-        None => "./module.nix",
-    };
-    let mut fil = File::create(fname).expect("ERROR: Could not open file");
-    match write!(fil, "{content}") {
-        Ok(()) => (),
-        Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
-    }
+
+    let output = config.output.unwrap_or("./module.nix"); 
+    fs::write(output, content)
+        .map_err(|e| MkboilerError::new(format!("could not write to file '{output}': {e}")))
 }
 
-pub fn shell(config: &Config) {
+pub fn shell(config: &Config) -> Result<(), MkboilerError> {
     let content = "{
   pkgs ? import <nixpkgs> { },
 }:
@@ -50,13 +38,8 @@ pkgs.mkShell {
     # Add start script here
   '';
 }";
-    let fname = match config.output {
-        Some(s) => s,
-        None => "./shell.nix",
-    };
-    let mut fil = File::create(fname).expect("ERROR: Could not open file");
-    match write!(fil, "{content}") {
-        Ok(()) => (),
-        Err(e) => eprintln!("ERROR: Could not write to file.\n{e}"),
-    }
+
+    let output = config.output.unwrap_or("./shell.nix"); 
+    fs::write(output, content)
+        .map_err(|e| MkboilerError::new(format!("could not write to file '{output}': {e}")))
 }
