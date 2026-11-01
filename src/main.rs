@@ -74,14 +74,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         let config = Config::from(opts);
 
         match config.target {
-            "default" | "default.nix" => Ok(nix::default(&config)),
-            "shell" | "shell.nix" => Ok(nix::shell(&config)),
-            "nix_module" | "mod.nix" | "module.nix" => Ok(nix::module(&config)),
-            "c" => Ok(c::c(&config)),
-            "cc" | "cplusplus" | "c++" | "cpp" => Ok(c::cpp(&config)),
-            "python" | "python3" => Ok(python::python3(&config)),
-            "rust" | "rustshell" | "rustShell" | "rust_shell" => Ok(rust::rust(&config)),
-            "icedshell" | "icedShell" | "iced_shell" => Ok(rust::iced(&config)),
+            "default" | "default.nix" => Ok(nix::default(&config)?),
+            "shell" | "shell.nix" => Ok(nix::shell(&config)?),
+            "nix_module" | "mod.nix" | "module.nix" => Ok(nix::module(&config)?),
+            "c" => Ok(c::c(&config)?),
+            "cc" | "cplusplus" | "c++" | "cpp" => Ok(c::cpp(&config)?),
+            "python" | "python3" => Ok(python::python3(&config)?),
+            "rust" | "rustshell" | "rustShell" | "rust_shell" => Ok(rust::rust(&config)?),
+            "icedshell" | "icedShell" | "iced_shell" => Ok(rust::iced(&config)?),
             _ => Err(MkboilerError::new(format!(
                 "Unknown boilerplate: {}",
                 config.target
